@@ -1,0 +1,44 @@
+---
+title: "Test"
+bibliography: distance_contrasts.bib
+csl: apa.csl  # это файл через который можно влиять на стиль встроенного цитирования
+link-citations: true
+---
+
+# Minimal example
+
+Нужно, чтобы в Referencы для цитирования из текста и для цитирования из таблицы выглядили одинакого.
+
+## Цитирование в тексте (Встроенный синтаксис)
+
+Какой-то текст, и ссылка на источник в нем [@diessel2013: 179].
+
+## Цитирование в таблице (RefManageR)
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(DT)
+library(RefManageR)
+
+bib <- ReadBib(file = "distance_contrasts.bib")
+dtable <- read_csv("distance_contrasts.csv")
+```
+
+```{r include=FALSE}
+dtable$source[[1]] <- RefManageR::Cite(bib, dtable$source[[1]], .opts = list(cite.style="authoryear", style = "html"))
+```
+
+```{r results = "asis", echo = FALSE}
+DT::datatable(dtable, escape = FALSE)
+```
+
+## References (RefManageR)
+
+```{r results = "asis", echo = FALSE}
+RefManageR::PrintBibliography(bib, .opts = list(bib.style = "authoryear", style = "html"))  # через style можно влиять на стиль цитирования, но очень ограничено 
+```
+
+## References (Встроенный синтаксис)
+
